@@ -10,5 +10,9 @@ import jakarta.validation.constraints.Pattern;
 public record RegisterRequest(
     @NotBlank(message = "El nombre de usuario es obligatorio")
     @Pattern(regexp = "^[a-zA-Z0-9]{4,15}$", message = "El username debe tener entre 4 y 15 caracteres alfanuméricos")
-    String username
+    String username,
+
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Pattern(regexp = "^[a-zA-Z0-9@#$%^&+=]{8,20}$", message = "La contraseña debe tener entre 8 y 20 caracteres")
+    String password
 ) {}

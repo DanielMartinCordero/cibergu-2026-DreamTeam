@@ -63,7 +63,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             // 6. Validación criptográfica: Verificamos que la firma del token no haya sido
             // manipulada
             // y que coincida con el usuario obtenido de la base de datos
-            if (jwtService.isTokenValid(jwt, userDetails.getUsername())) {
+            if (username.equals(userDetails.getUsername()) && jwtService.validateToken(jwt)) {
 
                 // 7. Si todo es correcto, generamos el "Pase de Seguridad" (Token de
                 // Autenticación de Spring)

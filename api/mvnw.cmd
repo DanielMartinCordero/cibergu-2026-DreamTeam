@@ -31,6 +31,7 @@
 @SET __MVNW_CMD__=
 @SET __MVNW_ERROR__=
 @SET __MVNW_PSMODULEP_SAVE=%PSModulePath%
+@IF "%JAVA_HOME%"=="" (SET "JAVA_HOME=C:\Program Files\Eclipse Adoptium\jdk-25.0.1.8-hotspot")
 @SET PSModulePath=
 @FOR /F "usebackq tokens=1* delims==" %%A IN (`powershell -noprofile "& {$scriptDir='%~dp0'; $script='%__MVNW_ARG0_NAME__%'; icm -ScriptBlock ([Scriptblock]::Create((Get-Content -Raw '%~f0'))) -NoNewScope}"`) DO @(
   IF "%%A"=="MVN_CMD" (set __MVNW_CMD__=%%B) ELSE IF "%%B"=="" (echo %%A) ELSE (echo %%A=%%B)

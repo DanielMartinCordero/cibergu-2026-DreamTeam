@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CIBERGU 2026 - Secure Identity Portal</title>
+    <meta name="description" content="Portal de Identidad y Gestión de Perfiles del torneo CIBERGU 2026. Seguridad de grado militar y arquitectura stateless.">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- View: Login -->
+        <div id="login-view" class="card animate-fade">
+            <div class="logo-section">
+                <h1>CIBERGU 2026</h1>
+                <p>Secure Identity Portal</p>
+            </div>
+            
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="login-username">Usuario</label>
+                    <input type="text" id="login-username" placeholder="Tu username" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Contraseña</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                <button type="submit" id="login-btn">Acceder al Sistema</button>
+            </form>
+
+            <p class="footer-text">
+                ¿No tienes cuenta? <a href="#" id="go-to-register">Crea una ahora</a>
+            </p>
+        </div>
+
+        <!-- View: Register -->
+        <div id="register-view" class="card animate-fade hidden">
+            <div class="logo-section">
+                <h1>CIBERGU</h1>
+                <p>Registro de Nuevos Talentos</p>
+            </div>
+            
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="reg-username">Usuario (4-15 alfanuméricos)</label>
+                    <input type="text" id="reg-username" placeholder="Ej: HackerZero" required pattern="^[a-zA-Z0-9]{4,15}$">
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Contraseña (mín. 8 caracteres)</label>
+                    <input type="password" id="reg-password" placeholder="••••••••" required minlength="8">
+                </div>
+                <button type="submit" id="register-btn">Finalizar Registro</button>
+            </form>
+
+            <p class="footer-text">
+                ¿Ya eres miembro? <a href="#" id="go-to-login">Inicia sesión</a>
+            </p>
+        </div>
+
+        <!-- View: Dashboard (Profile) -->
+        <div id="dashboard-view" class="card animate-fade hidden">
+            <div class="dashboard">
+                <div class="profile-avatar" id="avatar-initials">?</div>
+                <span class="status-badge">Conexión Segura</span>
+                <h1 id="profile-name">Cargando...</h1>
+                <p style="color: var(--text-dim); margin-top: 10px;">Estás autenticado mediante un token JWT efímero y stateless.</p>
+                
+                <button id="logout-btn" class="logout-btn">Cerrar Sesión Segura</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification system -->
+    <div id="notification"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>

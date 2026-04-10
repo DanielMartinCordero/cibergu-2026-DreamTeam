@@ -22,18 +22,9 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        // En Java 25 utilizamos var por inferencia de tipos local.
-        var userEntity = userRepository.findByUsername(username);
+        UserEntity userEntity = userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado en la base de datos: " + username));
 
-        if (userEntity == null) {
-            throw new UsernameNotFoundException("Usuario no encontrado en la base de datos");
-        }
-
-        /* 
-         * Se construye y devuelve la implementación org.springframework.security.core.userdetails.User 
-         * usando los datos obtenidos de la BD. 
-         * Se asume que UserEntity cuenta con getters estándar (getUsername() y getPassword()).
-         */
         return User.withUsername(userEntity.getUsername())
                 .password(userEntity.getPassword())
                 .authorities("USER") // Rol por defecto

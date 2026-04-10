@@ -11,6 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import com.cibergu.api.models.UserEntity;
+import com.cibergu.api.repositories.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
@@ -27,13 +30,20 @@ public class AuthController {
 
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     // Almacenamiento en memoria para Rate Limiting basado en IP
     private final Map<String, Bucket> buckets = new ConcurrentHashMap<>();
 
-    public AuthController(AuthenticationManager authenticationManager, JwtService jwtService) {
+    public AuthController(AuthenticationManager authenticationManager, 
+                          JwtService jwtService, 
+                          UserRepository userRepository, 
+                          PasswordEncoder passwordEncoder) {
         this.authenticationManager = authenticationManager;
         this.jwtService = jwtService;
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     private Bucket resolveBucket(String ip) {
@@ -75,8 +85,19 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest request) {
-        // La validación perimetral corre por @Valid
-        // Como no se nos facilita persistencia, se retorna éxito
+        // Verificar si el usuario ya existe
+        if (userRepository.findByUsername(request.username()).isPresent()) {
+            return ResponseEntity.status(HttpStatus.CONFLICT).body("El nombre de usuario ya está en uso");
+        }
+
+        // Crear nueva entidad de usuario
+        var user = new UserEntity();
+        user.setUsername(request.username());
+        // Hashear la contraseña antes de guardar
+        user.setPassword(passwordEncoder.encode(request.password()));
+
+        userRepository.save(user);
+
         return ResponseEntity.status(HttpStatus.CREATED).body("Usuario registrado con éxito");
     }
 }
